@@ -1,0 +1,41 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>icons/1428287364_calendar-128.png</file>
+        <file>icons/1428287619_user-group-128.png</file>
+        <file>icons/1428287627_user-alt-128.png</file>
+        <file>icons/1428287689_notepad-128.png</file>
+        <file>icons/1428287867_food.png</file>
+        <file>icons/1428288011_10.png</file>
+        <file>icons/1428288075_statistics_64.png</file>
+        <file>icons/1428360733_user_add.png</file>
+        <file>icons/1428360740_user_delete.png</file>
+        <file>icons/1428360743_file_edit.png</file>
+        <file>icons/fff-add.ico</file>
+        <file>icons/mini-calendar.gif</file>
+        <file>icons/small_user_icon.png</file>
+        <file>icons/1428288011_10_small.png</file>
+        <file>icons/calendar_small.png</file>
+        <file>icons/foods_small.png</file>
+        <file>icons/1429107785_678092-sign-add-128.png</file>
+        <file>icons/1429107797_678069-sign-error-128.png</file>
+        <file>icons/1429107911_sign-up.png</file>
+        <file>icons/1429654965_Address_Book_Alt_blue.png</file>
+        <file>icons/small_Address_Book_Alt_blue.png</file>
+        <file>icons/1430056843_electronic_billing_machine.png</file>
+        <file>icons/small_notepad-128.png</file>
+        <file>icons/1431956421_home-128.png</file>
+        <file>icons/1433369426_print_64.png</file>
+        <file>icons/Printer_orange_Icon_128.png</file>
+        <file>icons/1433370007_vector_66_15.png</file>
+        <file>icons/app_icon.ico</file>
+        <file>icons/login_icon.png</file>
+        <file>icons/collection_account_icon.png</file>
+        <file>icons/1434047701_vector_65_04.png</file>
+        <file>icons/small_collection_account_icon.png</file>
+        <file>icons/stats_lg.png</file>
+        <file>icons/1434133405_search-icon-tm.png</file>
+        <file>icons/1434208652_filter.png</file>
+        <file>icons/1434209948_Synchronize.png</file>
+        <file>icons/1435047788_coins.png</file>
+    </qresource>
+</RCC>
