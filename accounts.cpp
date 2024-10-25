@@ -7,7 +7,7 @@
 #include <QtPrintSupport/QPrintDialog>
 #include <QMessageBox>
 #include <QPainter>
-#include <QWebView>
+//#include <QWebView>
 #include <QPrintDialog>
 #include <QTextCursor>
 #include <QMargins>
@@ -56,8 +56,10 @@ void Accounts::createIncomeTable()
 {
     int year = ui->yearList->currentData(Qt::UserRole).toInt();
     int month = ui->monthList->currentData(Qt::UserRole).toInt();
-    double totalIncome = 0;
+    double totalPrevAdvLastMnth = 0;
 
+    double totalIncome = 0;
+    double totalAdvPayment = 0;
     DbMysql* d = DbMysql::getInstance();
     QMessageBox msgBox;
 
@@ -71,7 +73,9 @@ void Accounts::createIncomeTable()
 
         QString curDate = QDate::currentDate().toString("yyyy-MM-dd");
 
-        QSqlQuery query1( "SELECT inv_number,inv_date,lodging_bill_total,fooding_bill_total,(lodging_bill_total+fooding_bill_total) as amount FROM invoice where MONTH(inv_date)="+QString::number(month)+" and YEAR(inv_date) = "+QString::number(year)+" and status=0 order by inv_id desc;" ,d->getConnection());
+        QStringList booking_ids;
+
+        QSqlQuery query1( "SELECT inv_number,inv_date,lodging_bill_total,fooding_bill_total,(lodging_bill_total+fooding_bill_total) as amount,booking_id FROM invoice where MONTH(inv_date)="+QString::number(month)+" and YEAR(inv_date) = "+QString::number(year)+" and status=0 order by inv_id desc;" ,d->getConnection());
         if(!query1.isActive())
         {
             msgBox.critical(this,"Error","Failed to connect database.");
@@ -92,13 +96,74 @@ void Accounts::createIncomeTable()
                     ui->incomeTable->setItem(row,i,item);
                 }
                 totalIncome+=query1.value("amount").toDouble();
-
+                booking_ids<<query1.value("booking_id").toString();
                 row++;
             }
             ui->incomeTable->resizeColumnsToContents();
         }
+
+
+        QString id_list_string = booking_ids.join(',');
+
+        qDebug()<<id_list_string;
+
+        if(id_list_string.length() == 0) id_list_string = "-1";
+        //{
+            QSqlQuery query2( " select sum(payment_value) from advance_payments where MONTH(payment_time)="+QString::number(month)+" and YEAR(payment_time) = "+QString::number(year)+ " and booking_id not in ("+id_list_string+");" ,d->getConnection());
+            if(!query2.isActive())
+            {
+                msgBox.critical(this,"Error","Failed to connect database.");
+                qDebug()<<query2.lastQuery();
+                return ;
+            }
+            else
+            {
+                qDebug()<<query2.lastQuery();
+                while(query2.next())
+                {
+                    totalAdvPayment = query2.value(0).toDouble();
+                }
+            }
+
+
+            QSqlQuery query4( " select sum(payment_value) from advance_payments where MONTH(payment_time)<"+QString::number(month)+" and YEAR(payment_time) <= "+QString::number(year)+ " and booking_id in ("+id_list_string+");" ,d->getConnection());
+            if(!query4.isActive())
+            {
+                msgBox.critical(this,"Error","Failed to connect database.");
+                qDebug()<<query4.lastQuery();
+                return ;
+            }
+            else
+            {
+                qDebug()<<query4.lastQuery();
+                while(query4.next())
+                {
+                    totalPrevAdvLastMnth = query4.value(0).toDouble();
+                }
+            }
+        //}
+
+        QSqlQuery query3( "select sum(payment_amount) from staff_payment where MONTH(payment_date)="+QString::number(month)+" and YEAR(payment_date) = "+QString::number(year)+" ;" ,d->getConnection());
+        if( !query3.isActive() )
+        {
+            qDebug()<<"Failed to execute query. Add Staff.";
+            qDebug()<<query3.lastQuery();
+            qDebug()<<query3.lastError().text();
+            return;
+        }
+        else
+        {
+            query3.next();
+            ui->totalStaffPayment->setText(query3.value(0).toString()+".00");
+        }
+
     }
-    ui->totalIncome->setText(QString::number(totalIncome,'f',2));
+    ui->totalIncome->setText(QString::number(totalIncome-totalPrevAdvLastMnth,'f',2));
+    ui->advPayment->setText(QString::number(totalAdvPayment,'f',2));
+
+
+
+
 
 }
 
@@ -228,12 +293,12 @@ void Accounts::on_removeExpBtn_clicked()
 
 void Accounts::on_totalIncome_textChanged(const QString &arg1)
 {
-    ui->balance->setText(QString::number(ui->totalIncome->text().toDouble()-ui->totalExpenditure->text().toDouble(),'f',2));
+    ui->balance->setText(QString::number(ui->totalIncome->text().toDouble()+ui->advPayment->text().toDouble()-ui->totalExpenditure->text().toDouble()-ui->totalStaffPayment->text().toDouble(),'f',2));
 }
 
 void Accounts::on_totalExpenditure_textChanged(const QString &arg1)
 {
-    ui->balance->setText(QString::number(ui->totalIncome->text().toDouble()-ui->totalExpenditure->text().toDouble(),'f',2));
+    ui->balance->setText(QString::number(ui->totalIncome->text().toDouble()+ui->advPayment->text().toDouble()-ui->totalExpenditure->text().toDouble()-ui->totalStaffPayment->text().toDouble(),'f',2));
 }
 
 void Accounts::on_expFilter_clicked()
@@ -262,7 +327,7 @@ void Accounts::on_printButton_clicked()
     html+="<tr><td>";
     html+="<table width='100%' border=1 cellpadding='3' >";
     html+="<tr align='center' style='background:#efefef;' ><td>Invoice Number</td><td>Date</td><td>Total Amount</td></tr>";
-    int i =0;
+
     double total_amount_income = 0;
 
     if(!d->getConnection().open())

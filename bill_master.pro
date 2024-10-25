@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
-QT       += sql printsupport webkitwidgets
+QT       += sql printsupport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -38,9 +38,16 @@ SOURCES += main.cpp\
     hotelinfo.cpp \
     qcustomplot.cpp \
     stats.cpp \
-    accounts.cpp \
     usersettings.cpp \
-    addadvancepayment.cpp
+    addadvancepayment.cpp \
+    staffinfo.cpp \
+    accounts.cpp \
+    addstaff.cpp \
+    addstaffpayment.cpp \
+    restaurant.cpp \
+    addorder.cpp \
+    invoiceviewer.cpp \
+    gstinfo.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -69,7 +76,14 @@ HEADERS  += mainwindow.h \
     stats.h \
     accounts.h \
     usersettings.h \
-    addadvancepayment.h
+    addadvancepayment.h \
+    staffinfo.h \
+    addstaff.h \
+    addstaffpayment.h \
+    restaurant.h \
+    addorder.h \
+    invoiceviewer.h \
+    gstinfo.h
 
 
 FORMS    += mainwindow.ui \
@@ -96,13 +110,21 @@ FORMS    += mainwindow.ui \
     stats.ui \
     accounts.ui \
     usersettings.ui \
-    addadvancepayment.ui
+    addadvancepayment.ui \
+    staffinfo.ui \
+    addstaff.ui \
+    addstaffpayment.ui \
+    restaurant.ui \
+    addorder.ui \
+    invoiceviewer.ui \
+    gstinfo.ui
 
 RESOURCES += \
     bill_master_resources.qrc
 
 DISTFILES += \
     db.sql \
-    dbInfo.xml
+    dbInfo.xml \
+    sql_update_for_gst.sql
 
 RC_FILE = billmaster.rc

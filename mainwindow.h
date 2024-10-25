@@ -50,6 +50,10 @@ private slots:
 
     void on_actionExit_triggered();
 
+    void on_actionStaff_Details_Payments_triggered();
+
+    void on_actionGST_triggered();
+
 private:
    // Ui::MainWindow *ui;
     Customers mCustomers;

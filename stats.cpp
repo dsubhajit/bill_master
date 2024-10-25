@@ -8,7 +8,7 @@
 #include <QtPrintSupport/QPrintDialog>
 #include <QMessageBox>
 #include <QPainter>
-#include <QWebView>
+//#include <QWebView>
 #include <QPrintDialog>
 #include <QTextCursor>
 #include <QMargins>
@@ -55,7 +55,7 @@ Stats::~Stats()
 void Stats::createGraph()
 {
     int year = ui->year->currentData(Qt::UserRole).toInt();
-    int month = ui->month->currentData(Qt::UserRole).toInt();
+
 
     for(int i=0;i<ui->customPlot->graphCount();i++)
     {

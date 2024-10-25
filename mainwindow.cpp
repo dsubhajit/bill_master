@@ -13,6 +13,8 @@
 #include "usersettings.h"
 #include "stats.h"
 #include "accounts.h"
+#include "staffinfo.h"
+#include "gstinfo.h"
 #include <QtCore>
 #include <QtGui>
 
@@ -183,4 +185,22 @@ void MainWindow::on_actionChange_Password_triggered()
 void MainWindow::on_actionExit_triggered()
 {
     this->close();
+}
+
+void MainWindow::on_actionStaff_Details_Payments_triggered()
+{
+    StaffInfo* si = new StaffInfo();
+    si->setAttribute(Qt::WA_DeleteOnClose);
+    this->clearRenderArea();
+    ui->mainRenderArea->addWidget(si);
+    si->show();
+}
+
+void MainWindow::on_actionGST_triggered()
+{
+    GstInfo* gi = new GstInfo(this);
+    this->clearRenderArea();
+    ui->mainRenderArea->addWidget(gi);
+    gi->setAttribute(Qt::WA_DeleteOnClose);
+    gi->show();
 }

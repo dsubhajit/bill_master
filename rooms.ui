@@ -250,6 +250,21 @@
      </column>
      <column>
       <property name="text">
+       <string>cGST Tax</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>sGST Tax</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>GST Tax</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
        <string>Status</string>
       </property>
      </column>

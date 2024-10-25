@@ -181,6 +181,12 @@
   </layout>
   <zorder></zorder>
  </widget>
+ <tabstops>
+  <tabstop>username</tabstop>
+  <tabstop>password</tabstop>
+  <tabstop>loginBtn</tabstop>
+  <tabstop>cancelBtn</tabstop>
+ </tabstops>
  <resources>
   <include location="bill_master_resources.qrc"/>
  </resources>

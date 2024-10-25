@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>558</width>
-    <height>357</height>
+    <height>382</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -165,133 +165,193 @@
       <attribute name="title">
        <string>Room Information</string>
       </attribute>
-      <widget class="QGroupBox" name="groupBox_3">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>511</width>
-         <height>121</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Room Equipments</string>
-       </property>
-       <widget class="QListWidget" name="equipments">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>491</width>
-          <height>91</height>
-         </rect>
-        </property>
-        <property name="editTriggers">
-         <set>QAbstractItemView::NoEditTriggers</set>
-        </property>
-        <property name="selectionMode">
-         <enum>QAbstractItemView::MultiSelection</enum>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_4">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>140</y>
-         <width>511</width>
-         <height>61</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Room Rates</string>
-       </property>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>30</y>
-          <width>491</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_3">
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_7">
-           <property name="text">
-            <string>Rate per room</string>
+      <layout class="QVBoxLayout" name="verticalLayout_8">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QGroupBox" name="groupBox_3">
+           <property name="title">
+            <string>Room Equipments</string>
            </property>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <item>
+             <widget class="QListWidget" name="equipments">
+              <property name="editTriggers">
+               <set>QAbstractItemView::NoEditTriggers</set>
+              </property>
+              <property name="selectionMode">
+               <enum>QAbstractItemView::MultiSelection</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupBox_4">
+              <property name="title">
+               <string>Room Rates</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_5">
+               <item>
+                <layout class="QGridLayout" name="gridLayout_3">
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_7">
+                   <property name="text">
+                    <string>Rate per room</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QLineEdit" name="rate_per_room"/>
+                 </item>
+                 <item row="0" column="2">
+                  <widget class="QLabel" name="label_8">
+                   <property name="text">
+                    <string>Rate per person</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="3">
+                  <widget class="QLineEdit" name="rate_per_person"/>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupBox_5">
+              <property name="title">
+               <string>Room Status</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_6">
+               <item>
+                <layout class="QGridLayout" name="gridLayout_4">
+                 <item row="0" column="0">
+                  <widget class="QRadioButton" name="room_status_none">
+                   <property name="text">
+                    <string>None</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QRadioButton" name="room_status_need_cleaning">
+                   <property name="text">
+                    <string>Needs Cleaning</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="2">
+                  <widget class="QRadioButton" name="room_status_clean">
+                   <property name="text">
+                    <string>Clean</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="3">
+                  <widget class="QRadioButton" name="room_status_clean_checked">
+                   <property name="text">
+                    <string>Clean Checked</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupBox_6">
+              <property name="title">
+               <string>GST Details</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_7">
+               <item>
+                <layout class="QGridLayout" name="gridLayout_2">
+                 <item row="0" column="5">
+                  <widget class="QLabel" name="label_13">
+                   <property name="text">
+                    <string>%</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="3">
+                  <widget class="QLabel" name="label_10">
+                   <property name="text">
+                    <string>sGST</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="6">
+                  <widget class="QLabel" name="label_11">
+                   <property name="text">
+                    <string>GST</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_9">
+                   <property name="text">
+                    <string>cGST</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QDoubleSpinBox" name="cGst">
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                   <property name="buttonSymbols">
+                    <enum>QAbstractSpinBox::NoButtons</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="7">
+                  <widget class="QDoubleSpinBox" name="gst">
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                   <property name="readOnly">
+                    <bool>true</bool>
+                   </property>
+                   <property name="buttonSymbols">
+                    <enum>QAbstractSpinBox::NoButtons</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="4">
+                  <widget class="QDoubleSpinBox" name="sGst">
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                   <property name="buttonSymbols">
+                    <enum>QAbstractSpinBox::NoButtons</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="2">
+                  <widget class="QLabel" name="label_12">
+                   <property name="text">
+                    <string>%</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="8">
+                  <widget class="QLabel" name="label_14">
+                   <property name="text">
+                    <string>%</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
           </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QLineEdit" name="rate_per_room"/>
-         </item>
-         <item row="0" column="2">
-          <widget class="QLabel" name="label_8">
-           <property name="text">
-            <string>Rate per person</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="3">
-          <widget class="QLineEdit" name="rate_per_person"/>
          </item>
         </layout>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="groupBox_5">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>210</y>
-         <width>511</width>
-         <height>61</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Room Status</string>
-       </property>
-       <widget class="QWidget" name="layoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>20</y>
-          <width>491</width>
-          <height>19</height>
-         </rect>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_4">
-         <item row="0" column="0">
-          <widget class="QRadioButton" name="room_status_none">
-           <property name="text">
-            <string>None</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QRadioButton" name="room_status_need_cleaning">
-           <property name="text">
-            <string>Needs Cleaning</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QRadioButton" name="room_status_clean">
-           <property name="text">
-            <string>Clean</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="3">
-          <widget class="QRadioButton" name="room_status_clean_checked">
-           <property name="text">
-            <string>Clean Checked</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
    </item>
@@ -328,6 +388,27 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>roomNumber</tabstop>
+  <tabstop>roomType</tabstop>
+  <tabstop>roomDescription</tabstop>
+  <tabstop>singleBeds</tabstop>
+  <tabstop>doubleBeds</tabstop>
+  <tabstop>extraBed</tabstop>
+  <tabstop>equipments</tabstop>
+  <tabstop>rate_per_room</tabstop>
+  <tabstop>rate_per_person</tabstop>
+  <tabstop>room_status_none</tabstop>
+  <tabstop>room_status_need_cleaning</tabstop>
+  <tabstop>room_status_clean</tabstop>
+  <tabstop>room_status_clean_checked</tabstop>
+  <tabstop>cGst</tabstop>
+  <tabstop>sGst</tabstop>
+  <tabstop>gst</tabstop>
+  <tabstop>saveRoom</tabstop>
+  <tabstop>cancelAddNewRoom</tabstop>
+ </tabstops>
  <resources>
   <include location="bill_master_resources.qrc"/>
  </resources>

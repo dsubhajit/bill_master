@@ -28,6 +28,10 @@ private slots:
 
     void on_saveRoom_clicked();
 
+    void on_cGst_valueChanged(double arg1);
+
+    void on_sGst_valueChanged(double arg1);
+
 private:
     Rooms *mRooms;
     Ui::AddRooms *ui;

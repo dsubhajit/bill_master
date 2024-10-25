@@ -51,7 +51,7 @@ void Foods::createFoodsTable()
         msgBox.critical(this,"Error","Failed to connect database.");
     }
     else {
-        QSqlQuery query( "select * from foods;" ,d->getConnection());
+        QSqlQuery query( "select food_id,hsn_code,food_name,food_type,food_category,sgst,cgst,food_price from foods;" ,d->getConnection());
         if( !query.isActive() )
         {
             qDebug()<<"Failed to execute query. insert room.";
@@ -74,7 +74,14 @@ void Foods::createFoodsTable()
                     newItem->setData(Qt::UserRole,QVariant::fromValue(query.value(0).toInt()));
 
                     //newItem->setData(Qt::,QVariant::fromValue(query1.value(columnSize).toInt()));
+                    if(column >= 5 && column <= 7 ) {
+                        newItem->setText(QString::number(query.value(column).toDouble(),'f',2));
+                        newItem->setTextAlignment(Qt::AlignCenter);
+                    }
+                    else {
                     newItem->setText(query.value(column).toString());
+                    }
+
                     qDebug()<<query.value(column).toString();
                     ui->foodListTable->setItem(row, column-1, newItem);
                 }
@@ -127,8 +134,9 @@ void Foods::createBookingTable()
                     newItem->setData(Qt::UserRole,QVariant::fromValue(query1.value(0).toInt()));
 
                     //newItem->setData(Qt::,QVariant::fromValue(query1.value(columnSize).toInt()));
-                    newItem->setText(query1.value(column).toString());
+                    newItem->setText(query1.value(column).toString());                    
                     ui->bookingTable->setItem(row, column, newItem);
+
 
                 }
 
@@ -346,5 +354,81 @@ void Foods::on_removeOrder_clicked()
         }
     }
     else msgBox.information(this,"Delete Order","Please select a order.");
+
+}
+
+void Foods::on_finalizeFoods_clicked()
+{
+    QMessageBox msgBox;
+    if(ui->bookingTable->selectedItems().size() > 0)
+    {
+        DbMysql* d = DbMysql::getInstance();
+        if(!d->getConnection().open()){
+            msgBox.critical(this,"Error","Failed to connect database.");
+        }
+        else
+        {
+            QSqlQuery query( "select * from invoice where booking_id="+ui->bookingTable->selectedItems().at(0)->data(Qt::UserRole).toString()+" and status = 0;" ,d->getConnection());
+            if( !query.isActive() )
+            {
+                qDebug()<<"Failed to execute query. insert room.";
+                qDebug()<<query.lastQuery();
+                qDebug()<<query.lastError().text();
+                return;
+            }
+            else
+            {
+                qDebug()<<query.lastQuery();
+                if(query.size() > 0)
+                {
+                     QSqlQuery query2( "select sum(qty*rate) as food_bill from food_orders where booking_id="+ui->bookingTable->selectedItems().at(0)->data(Qt::UserRole).toString()+";" ,d->getConnection());
+                     if( !query2.isActive() )
+                     {
+                         qDebug()<<"Failed to execute query. insert room.";
+                         qDebug()<<query2.lastQuery();
+                         qDebug()<<query2.lastError().text();
+                         return;
+                     }
+                     else
+                     {
+                         query2.next();
+                         qDebug()<<query2.value("food_bill").toString();
+                         QSqlQuery query3( "update invoice set fooding_bill_total="+query2.value("food_bill").toString()+" where booking_id="+ui->bookingTable->selectedItems().at(0)->data(Qt::UserRole).toString()+";" ,d->getConnection());
+                         if( !query2.isActive() )
+                         {
+                             qDebug()<<"Failed to execute query. insert room.";
+                             qDebug()<<query2.lastQuery();
+                             qDebug()<<query2.lastError().text();
+                             return;
+                         }
+                         else
+                         {
+                             msgBox.information(this,"Update Invoice","Invoice updated.");
+                         }
+
+                     }
+                }
+            }
+        }
+    }
+    else msgBox.information(this,"Update Invoice","Please select a booking.");
+}
+
+void Foods::on_editFoodDetails_clicked()
+{
+    QMessageBox msgBox;
+    if(ui->foodListTable->selectedItems().size() <= 0 )
+    {
+         msgBox.information(this,"Edit Food & Beverages Details","Please select a food from the list.");
+         return;
+    }
+
+    AddFoods *foodObj = new AddFoods();
+    //foodObj->setParent(this);
+    qDebug()<<"ID:"<<ui->foodListTable->selectedItems().at(0)->data(Qt::UserRole).toInt();
+    foodObj->addFoodParent(this);
+    foodObj->setFoodId(ui->foodListTable->selectedItems().at(0)->data(Qt::UserRole).toInt());
+    foodObj->setEditMode(true);
+    foodObj->show();
 
 }

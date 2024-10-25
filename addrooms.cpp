@@ -120,7 +120,9 @@ void AddRooms::setEditMode(bool eMode)
                     ui->doubleBeds->setValue(query1.value("double_beds").toInt());
                     ui->extraBed->setValue(query1.value("extra_beds").toInt());
 
+
                     QStringList equip = query1.value("room_equip").toString().split(',');
+                    /*
                     foreach (QString eq,equip)
                     {
                         QListWidgetItem* item = new QListWidgetItem();
@@ -128,10 +130,28 @@ void AddRooms::setEditMode(bool eMode)
                         ui->equipments->setItemSelected(item,true);
 
                     }
+                    */
+
+                    for(int i = 0; i < ui->equipments->count(); ++i)
+                    {
+                        QListWidgetItem* item = ui->equipments->item(i);
+                        if(equip.contains(item->text()))
+                        {
+                            item->setSelected(true);
+                        }
+                    }
+
+
+
+
+
 
                     ui->rate_per_room->setText(query1.value("rate_per_room").toString());
                     ui->rate_per_person->setText(query1.value("rate_per_person").toString());
                     int room_status = query1.value("room_status").toInt();
+                    ui->cGst->setValue(query1.value("cgst").toDouble());
+                    ui->sGst->setValue(query1.value("sgst").toDouble());
+                    ui->gst->setValue(query1.value("gst").toDouble());
 
                     switch(room_status)
                     {
@@ -204,7 +224,7 @@ void AddRooms::on_saveRoom_clicked()
 
         if(!mEditMode)
         {
-            QSqlQuery query( "insert into rooms values(DEFAULT,'"+ui->roomNumber->text()+"','"+ui->roomType->currentText()+"','"+ui->roomDescription->toPlainText()+"',"+ui->singleBeds->text()+","+ui->doubleBeds->text()+","+ui->extraBed->text()+",'"+equip+"',"+QString::number(rate_per_room)+","+QString::number(rate_per_person)+","+QString::number(room_status)+",0);" ,d->getConnection());
+            QSqlQuery query( "insert into rooms values(DEFAULT,'"+ui->roomNumber->text()+"','"+ui->roomType->currentText()+"','"+ui->roomDescription->toPlainText()+"',"+ui->singleBeds->text()+","+ui->doubleBeds->text()+","+ui->extraBed->text()+",'"+equip+"',"+QString::number(rate_per_room)+","+QString::number(rate_per_person)+","+QString::number(room_status)+",0,"+QString::number(ui->cGst->value())+","+QString::number(ui->sGst->value())+","+QString::number(ui->gst->value())+");" ,d->getConnection());
             if( !query.isActive() )
             {
                 qDebug()<<"Failed to execute query. insert room.";
@@ -221,7 +241,7 @@ void AddRooms::on_saveRoom_clicked()
         }
         else
         {
-            QSqlQuery query( "update rooms set room_number='"+ui->roomNumber->text()+"',room_equip='"+equip+"',room_type='"+ui->roomType->currentText()+"',room_desc='"+ui->roomDescription->toPlainText()+"',single_beds="+ui->singleBeds->text()+",double_beds="+ui->doubleBeds->text()+",extra_beds="+ui->extraBed->text()+",rate_per_room="+QString::number(rate_per_room)+",rate_per_person="+QString::number(rate_per_person)+",room_status="+QString::number(room_status)+" where room_id="+QString::number(mRoomId)+";" ,d->getConnection());
+            QSqlQuery query( "update rooms set room_number='"+ui->roomNumber->text()+"',room_equip='"+equip+"',room_type='"+ui->roomType->currentText()+"',room_desc='"+ui->roomDescription->toPlainText()+"',single_beds="+ui->singleBeds->text()+",double_beds="+ui->doubleBeds->text()+",extra_beds="+ui->extraBed->text()+",rate_per_room="+QString::number(rate_per_room)+",rate_per_person="+QString::number(rate_per_person)+",room_status="+QString::number(room_status)+" ,cgst="+QString::number(ui->cGst->value())+",sgst="+QString::number(ui->sGst->value())+",gst="+QString::number(ui->gst->value())+" where room_id="+QString::number(mRoomId)+";" ,d->getConnection());
             if( !query.isActive() )
             {
                 qDebug()<<"Failed to execute query. insert room.";
@@ -238,4 +258,14 @@ void AddRooms::on_saveRoom_clicked()
 
         }
     }
+}
+
+void AddRooms::on_cGst_valueChanged(double arg1)
+{
+    ui->gst->setValue(arg1+ui->sGst->value());
+}
+
+void AddRooms::on_sGst_valueChanged(double arg1)
+{
+    ui->gst->setValue(arg1+ui->cGst->value());
 }

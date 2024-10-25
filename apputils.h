@@ -11,6 +11,8 @@ public:
     AppUtils();
     static void clearLayout(QLayout* layout, bool deleteWidgets, QString space);
     static QString  numberToText(uint number);
+    static QString toCamelCase(const QString& s);
+
     ~AppUtils();
 };
 

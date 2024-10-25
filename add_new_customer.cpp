@@ -41,6 +41,9 @@ void add_new_customer::on_saveNewCustomer_clicked()
     QString id_type = ui->id_type->currentText();
     QString id_serial = ui->id_serial->text();        
     QString comments = ui->comments->toPlainText();
+    QString gst = ui->gst_no->text();
+
+
     QMessageBox msgBox;
     qDebug()<<"Yo:"<<name.length();
     if(name.length()==0){
@@ -54,7 +57,7 @@ void add_new_customer::on_saveNewCustomer_clicked()
         msgBox.critical(this,"Error","Failed to connect database.");
     }
     else {
-        QSqlQuery query( "insert into customers values(DEFAULT,'"+name+"','"+email+"','"+address+"','"+phone+"','"+id_type+"','"+id_serial+"','"+comments+"');" ,d->getConnection());
+        QSqlQuery query( "insert into customers values(DEFAULT,'"+name+"','"+email+"','"+address+"','"+phone+"','"+id_type+"','"+id_serial+"','"+comments+"','"+gst+"');" ,d->getConnection());
 
         if( !query.isActive() )
         {
@@ -128,7 +131,7 @@ void add_new_customer::editCustomer(QString aCustomerId)
                 ui->email->setText(query.value("email").toString());
                 ui->phone->setText(query.value("phone").toString());
                 ui->comments->setPlainText(query.value("comments").toString());
-
+                ui->gst_no->setText(query.value("gstin_no").toString());
                 ui->id_type->setCurrentText(query.value("id_type").toString());
                 ui->id_serial->setText(query.value("id_serial").toString());
 

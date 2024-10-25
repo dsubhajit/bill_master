@@ -71,6 +71,8 @@ private slots:
 
     void on_payment_status_currentIndexChanged(int index);
 
+    //void on_room_status_table_cellChanged(int row, int column);
+
 private:
     Ui::CreateBooking *ui;
 };

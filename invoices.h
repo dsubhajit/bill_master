@@ -22,7 +22,8 @@ private slots:
     void on_addInvoices_clicked();
     void createInvoiceTable();
 
-    void on_cancelInvoice_clicked();
+    //void on_cancelInvoice_clicked();
+    void on_deleteInvoice_clicked();
 
     void on_printInvoice_clicked();
 

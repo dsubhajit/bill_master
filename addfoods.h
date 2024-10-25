@@ -16,6 +16,8 @@ public:
 
     explicit AddFoods(QWidget *parent = 0);
     void addFoodParent(Foods *parent);
+    void setEditMode(bool aEditMode);
+    void setFoodId(int aFoodId);
     ~AddFoods();
 
 private slots:
@@ -25,6 +27,8 @@ private slots:
 
 private:
     Ui::AddFoods *ui;
+    bool mEditMode;
+    int mFoodId;
 };
 
 #endif // ADDFOODS_H

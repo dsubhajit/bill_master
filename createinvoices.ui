@@ -52,7 +52,7 @@
         </sizepolicy>
        </property>
        <property name="readOnly">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -295,18 +295,15 @@
           </property>
          </widget>
         </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>GSTIN</string>
+          </property>
+         </widget>
+        </item>
         <item row="3" column="1">
-         <spacer name="horizontalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
+         <widget class="QLineEdit" name="gst_no"/>
         </item>
        </layout>
       </item>
@@ -375,6 +372,21 @@
        </column>
        <column>
         <property name="text">
+         <string>GST %</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>CGST</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>SGST</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
          <string>Amount</string>
         </property>
        </column>
@@ -426,38 +438,6 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_15">
-            <property name="minimumSize">
-             <size>
-              <width>80</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Service Tax</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLineEdit" name="serviceTax">
-            <property name="inputMethodHints">
-             <set>Qt::ImhNone</set>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-            <property name="clearButtonEnabled">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
          </layout>
         </item>
         <item row="1" column="0">
@@ -485,6 +465,9 @@
            <widget class="QLineEdit" name="taxAmount">
             <property name="inputMethodHints">
              <set>Qt::ImhNone</set>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
             <property name="readOnly">
              <bool>true</bool>
@@ -575,7 +558,17 @@
        </property>
        <column>
         <property name="text">
+         <string>HSN Code</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
          <string>Item Name</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Order Time</string>
         </property>
        </column>
        <column>
@@ -590,12 +583,22 @@
        </column>
        <column>
         <property name="text">
-         <string>Order Time</string>
+         <string>CGST (%)</string>
         </property>
        </column>
        <column>
         <property name="text">
-         <string>Amount</string>
+         <string>SGST (%)</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Tax Amount</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Total Amount</string>
         </property>
        </column>
       </widget>
@@ -611,6 +614,38 @@
        <layout class="QFormLayout" name="formLayout">
         <item row="0" column="0">
          <layout class="QGridLayout" name="gridLayout_9">
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="taxAmountFood">
+            <property name="maximumSize">
+             <size>
+              <width>150</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="foodTotalAmount">
+            <property name="maximumSize">
+             <size>
+              <width>150</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="0">
            <widget class="QLabel" name="label_18">
             <property name="sizePolicy">
@@ -636,64 +671,7 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="foodTotalAmount">
-            <property name="maximumSize">
-             <size>
-              <width>150</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLineEdit" name="taxAmountFood">
-            <property name="maximumSize">
-             <size>
-              <width>150</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="0">
-           <widget class="QLabel" name="label_19">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>150</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>Service Tax</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
            <widget class="QLabel" name="label_20">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
@@ -715,19 +693,6 @@
             </property>
             <property name="text">
              <string>Tax Amount</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLineEdit" name="serviceTaxFood">
-            <property name="maximumSize">
-             <size>
-              <width>150</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>

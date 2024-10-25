@@ -15,8 +15,8 @@ CreateLog::CreateLog(QWidget *parent) :
     ui(new Ui::CreateLog)
 {
     ui->setupUi(this);
-    ui->check_out_time_label->setHidden(true);
-    ui->check_out_time->setHidden(true);
+    ui->check_out_time_label->setHidden(false);
+    ui->check_out_time->setHidden(false);
     mEditMode = false;
 }
 
@@ -112,7 +112,10 @@ void CreateLog::setDataFields(int booking_id)
             ui->nop->setText(query1.value("nop").toString());
             ui->room_no->setText(query1.value("room_numbers").toString());
 
+            ui->check_in_time->setDateTime(query1.value("in_time").toDateTime());
+            ui->check_out_time->setDateTime(query1.value("out_time").toDateTime());
 
+           // qDebug()<<" CHeck Out:"<<query1.value("out_time").toString();
             if(mEditMode)
             {
                 QSqlQuery query4( "select * from booking_log where log_id="+QString::number(mLogId)+";" ,d->getConnection());
@@ -189,7 +192,7 @@ void CreateLog::on_saveBtn_clicked()
     else
     {
 
-        QSqlQuery query1( "update booking set in_time='"+check_in_time.toString("yyyy-MM-dd HH:mm:ss")+"',reg_serial='"+regSerial+"' where booking_id="+QString::number(booking_id)+";" ,d->getConnection());
+        QSqlQuery query1( "update booking set in_time='"+check_in_time.toString("yyyy-MM-dd HH:mm:ss")+"',out_time='"+check_out_time.toString("yyyy-MM-dd HH:mm:ss")+"',reg_serial='"+regSerial+"' where booking_id="+QString::number(booking_id)+";" ,d->getConnection());
 
         if(!query1.isActive())
         {

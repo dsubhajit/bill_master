@@ -27,7 +27,7 @@ void Rooms::getAllRoomsData()
         qDebug() << d->getConnection().lastError().text();
     }
     else {
-        QSqlQuery query( "SELECT room_id,room_number, room_type, room_desc, single_beds, double_beds, extra_beds, room_equip, rate_per_room,rate_per_person,room_status FROM rooms",d->getConnection() );
+        QSqlQuery query( "SELECT room_id,room_number, room_type, room_desc, single_beds, double_beds, extra_beds, room_equip, rate_per_room,rate_per_person,cgst,sgst,gst,room_status FROM rooms",d->getConnection() );
 
         if( !query.isActive() )
         {
@@ -65,7 +65,13 @@ void Rooms::getAllRoomsData()
 
                         newItem->setBackgroundColor(clr);
                     }
-                    else newItem->setText(query.value(column).toString());
+                    else if(column >=10 && column<=12 )
+                    {
+                        newItem->setText(query.value(column).toString()+" %");
+                        newItem->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
+                    }
+                    else
+                        newItem->setText(query.value(column).toString()); //newItem->setText(query.value(column).toString());
                     qDebug()<<query.value(column).toString();
                     newItem->setData(Qt::UserRole,QVariant::fromValue(query.value(0).toInt()));
                     ui->roomDetailsTable->setItem(row, column-1, newItem);
@@ -158,7 +164,7 @@ void Rooms::on_editRoom_clicked()
 
 void Rooms::on_deleteRoom_clicked()
 {
-    int row = ui->roomDetailsTable->selectedItems().at(0)->data(Qt::UserRole).toInt();
+    //int row = ui->roomDetailsTable->selectedItems().at(0)->data(Qt::UserRole).toInt();
 
 
     QMessageBox::StandardButton reply;

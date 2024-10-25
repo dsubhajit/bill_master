@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>758</width>
-    <height>355</height>
+    <width>1016</width>
+    <height>585</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,7 +28,7 @@
        <string notr="true"/>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="page"/>
       <widget class="QWidget" name="page_2"/>
@@ -41,7 +41,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>758</width>
+     <width>1016</width>
      <height>21</height>
     </rect>
    </property>
@@ -113,6 +113,8 @@
    <addaction name="actionInvoices"/>
    <addaction name="actionStatistics"/>
    <addaction name="actionAccounts"/>
+   <addaction name="actionStaff_Details_Payments"/>
+   <addaction name="actionGST"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionCreate_Backup">
@@ -264,6 +266,30 @@
   <action name="actionChange_Password">
    <property name="text">
     <string>Change Password</string>
+   </property>
+  </action>
+  <action name="actionStaff_Details_Payments">
+   <property name="icon">
+    <iconset resource="bill_master_resources.qrc">
+     <normaloff>:/icons/icons/payment-icon.png</normaloff>:/icons/icons/payment-icon.png</iconset>
+   </property>
+   <property name="text">
+    <string>Staff Details /  Payments</string>
+   </property>
+   <property name="toolTip">
+    <string>Staff details and payments</string>
+   </property>
+  </action>
+  <action name="actionGST">
+   <property name="icon">
+    <iconset resource="bill_master_resources.qrc">
+     <normaloff>:/icons/icons/if_Finance_loan_money_1889199.png</normaloff>:/icons/icons/if_Finance_loan_money_1889199.png</iconset>
+   </property>
+   <property name="text">
+    <string>GST</string>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;GST Tax Details&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </action>
  </widget>

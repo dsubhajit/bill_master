@@ -81,6 +81,7 @@ void LogBook::on_logbook_cellDoubleClicked(int row, int column)
     DbMysql* d = DbMysql::getInstance();
     QMessageBox msgBox;
 
+    column = 0;
     //ui->check_in_time->setDateTime(QDateTime::currentDateTime());
 
     if(!d->getConnection().open())

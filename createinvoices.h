@@ -19,6 +19,11 @@ public:
     int genInvoiceId();
     void addBookingData(int booking_id);
     QString getInvoiceNumberFromBookingId(int booking_id);
+
+
+    double getCgstTaxAmount();
+    double getSgstTaxAmount();
+
     ~CreateInvoices();
 
 private slots:
@@ -28,13 +33,9 @@ private slots:
 
 
 
-    void on_lodging_bill_itemChanged(QTableWidgetItem *item);
 
-    void on_totalAmount_textChanged(const QString &arg1);
 
-    void on_serviceTax_textChanged(const QString &arg1);
 
-    void on_serviceTaxFood_textChanged(const QString &arg1);
 
     bool isInvoicesCreated(int booking_id);
 

@@ -78,7 +78,10 @@ create table rooms (
     rate_per_room   double,
     rate_per_person double,
     room_status     integer,
-    room_state      integer
+    room_state      integer,
+    cgst            double,
+    sgst            double,
+    gst             double
 
 );
 
@@ -138,7 +141,7 @@ create view booking_details as (select booking.booking_id,booking_date,booking_f
                 left join customers on booking.customer_id = customers.customer_id
                 left join room_details on booking.booking_id = room_details.booking_id );
 
-create view  room_booking_details as (SELECT room_bookings.booking_id,room_number,room_rate,rooms.room_type,booking_from,booking_to FROM `room_bookings` left join rooms on room_bookings.room_id = rooms.room_id );
+create view  room_booking_details as (SELECT room_bookings.booking_id,room_number,room_bookings.room_rate,rooms.room_type,booking_from,booking_to FROM `room_bookings` left join rooms on room_bookings.room_id = rooms.room_id );
 
 create table identity_type (
     type_id     integer primary key AUTO_INCREMENT,
@@ -200,3 +203,24 @@ create table advance_payments(
 /*Changes*/
 
 ALTER TABLE  `advance_payments` ADD  `payment_time` TIMESTAMP NOT NULL ;
+
+
+create table staff_details (
+    staff_id    int primary key auto_increment,
+    staff_name  varchar(128),
+    staff_add   text,
+    staff_phone varchar(16),
+    staff_join  date,
+    staff_remarks   text
+);
+
+create table staff_payment (
+    payment_id  int primary key auto_increment,
+    staff_id     int references staff_details(staff_id),
+    payment_amount  double,
+    payment_date    date,
+    entry_date      date,
+    remarks         text
+);
+
+create view booking_adv_payments as ( SELECT `booking_id`,sum(`payment_value`) as payment_value FROM `advance_payments` group by booking_id,month(`payment_time`));

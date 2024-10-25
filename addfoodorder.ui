@@ -232,6 +232,11 @@
         </property>
         <column>
          <property name="text">
+          <string>HSN Code</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
           <string>Food Name</string>
          </property>
         </column>
@@ -243,6 +248,16 @@
         <column>
          <property name="text">
           <string>Rate</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>SGST (%)</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>CGST (%)</string>
          </property>
         </column>
         <column>

@@ -57,6 +57,9 @@ void HotelInfo::addHotelInfoInForm()
             ui->website->setText(query1.value(10).toString());
             ui->cperson->setText(query1.value(11).toString());
             ui->taxId->setText(query1.value(12).toString());
+            ui->fCgstrate->setValue(query1.value(13).toDouble());
+            ui->fSgstRate->setValue(query1.value(14).toDouble());
+
 
         }
     }
@@ -84,7 +87,9 @@ void HotelInfo::on_saveInfoBtn_clicked()
         sql +="',email='"+ui->email->text();
         sql +="',website='"+ui->website->text();
         sql +="',contact_person='"+ui->cperson->text();
-        sql +="',tax_id='"+ui->taxId->text()+"' where hotel_info_id=1;";
+        sql +="',gst_number='"+ui->taxId->text();
+        sql +="',food_cgst="+QString::number(ui->fCgstrate->value());
+        sql +=" ,food_sgst="+QString::number(ui->fSgstRate->value())+" where hotel_info_id=1;";
 
         QSqlQuery query1(sql,d->getConnection());
         qDebug()<<query1.lastQuery();

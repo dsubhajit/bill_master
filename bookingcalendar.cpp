@@ -118,7 +118,7 @@ void BookingCalendar::createCalendar()
             //ui->bookingCalendarTable->verticalHeader()->setStyleSheet("QHeaderView::section { background-color:#0B2161;color:#fff; }");
             //ui->bookingCalendarTable->horizontalHeader()->setStyleSheet("QHeaderView::section { background-color:#0B2161;color:#fff; }");
 
-            int mnth = QDate::currentDate().month();
+
             ui->bookingCalendarTable->horizontalScrollBar()->setValue(scroll_pos);
 
             QSqlQuery query2("select * from room_bookings where booking_from >='"+start_date+"' and booking_to<='"+end_date+"' order by room_id;");
@@ -133,10 +133,10 @@ void BookingCalendar::createCalendar()
                     if(row_index.contains(room_index.value(query2.value("room_id").toInt()))){
                         int row_i = row_index.value(room_index.value(query2.value("room_id").toInt()));
                         //qDebug()<<"room :"<<room_index.value(query2.value(2).toInt())<<" index:"<<row_i;
-                        if(coloumn_index.contains(query2.value(3).toDate().toString()) && coloumn_index.contains(query2.value(4).toDate().toString()))
+                        if(coloumn_index.contains(query2.value(5).toDate().toString()) && coloumn_index.contains(query2.value(6).toDate().toString()))
                         {
-                            int clmn_start = coloumn_index.value(query2.value(3).toDate().toString());
-                            int clmn_end =  coloumn_index.value(query2.value(4).toDate().toString());
+                            int clmn_start = coloumn_index.value(query2.value(5).toDate().toString());
+                            int clmn_end =  coloumn_index.value(query2.value(6).toDate().toString());
 
                             for(int k = clmn_start ; k<=clmn_end; k++){
                                 QTableWidgetItem *newItem = new QTableWidgetItem();
@@ -392,7 +392,7 @@ void BookingCalendar::on_bookingLogTable_cellDoubleClicked(int row, int column)
 {
     QMessageBox msgBox;
     int booking_id = ui->bookingLogTable->item(row,0)->data(Qt::UserRole).toInt();
-    qDebug()<<ui->bookingLogTable->item(row,6)->text().trimmed().length()<<"  "<<ui->bookingLogTable->item(row,6)->text();
+    qDebug()<<ui->bookingLogTable->item(row,6)->text().trimmed().length()<<"  "<<ui->bookingLogTable->item(row,6)->text()<<column;
     if(ui->bookingLogTable->item(row,6)->text().trimmed().length() <= 0)
     {
         CreateLog* cl = new CreateLog();
@@ -537,7 +537,7 @@ void BookingCalendar::on_printBookingConfirm_clicked()
 
         html+= "<table cellpadding=\"5\" border=1 cellspacing=1  width=\"100%\" >";
         html+= "<tr style='font-weight:bold;background:#efefef;' ><td>Room Number</td><td>Room Type</td><td>Booking From</td><td>Booking To</td><td>Rate</td></tr>";
-        double room_total_amount = 0;
+        //double room_total_amount = 0;
         if(!d->getConnection().open())
         {
             msgBox.critical(this,"Error","Failed to connect database.1");

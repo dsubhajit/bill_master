@@ -62,7 +62,7 @@ void AppUtils::clearLayout(QLayout* layout, bool deleteWidgets,QString space)
                 clearLayout(childLayout, deleteWidgets);
             delete item;
     }
-    /*
+
     while (QLayoutItem* item = layout->takeAt(0))
     {
         QWidget* widget;
@@ -76,6 +76,15 @@ void AppUtils::clearLayout(QLayout* layout, bool deleteWidgets,QString space)
         delete item;
     }
     */
+}
+
+QString AppUtils::toCamelCase(const QString& s)
+{
+    QStringList parts = s.split(' ', QString::SkipEmptyParts);
+    for (int i = 0; i < parts.size(); ++i)
+        parts[i].replace(0, 1, parts[i][0].toUpper());
+
+    return parts.join(" ");
 }
 
 QString  AppUtils::numberToText(uint number)
@@ -170,6 +179,6 @@ QString  AppUtils::numberToText(uint number)
                 output += " " + numberToText(remainder);
         }
     }
-
-    return output;
+    //output[0] = toupper(output[0]);
+    return toCamelCase(output);
 }

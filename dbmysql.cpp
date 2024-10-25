@@ -10,7 +10,7 @@ DbMysql::DbMysql()
     QFile file(QDir::currentPath()+"/dbInfo.xml");
     if (!file.open(QFile::ReadOnly | QFile::Text))
     {
-        qDebug()<< "Error: Cannot read file " << qPrintable("filename")
+        qDebug()<< "Error: Cannot read file " << QDir::currentPath()+qPrintable("filename")
          << ": " << qPrintable(file.errorString());
 
     }

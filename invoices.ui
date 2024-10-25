@@ -153,32 +153,6 @@
      </item>
      <item>
       <layout class="QGridLayout" name="gridLayout_2">
-       <item row="0" column="0">
-        <widget class="QToolButton" name="cancelInvoice">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>80</width>
-           <height>40</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Cancel Invoice</string>
-         </property>
-         <property name="icon">
-          <iconset resource="bill_master_resources.qrc">
-           <normaloff>:/icons/icons/1429107797_678069-sign-error-128.png</normaloff>:/icons/icons/1429107797_678069-sign-error-128.png</iconset>
-         </property>
-         <property name="toolButtonStyle">
-          <enum>Qt::ToolButtonTextBesideIcon</enum>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="2">
         <widget class="QPushButton" name="printInvoice">
          <property name="minimumSize">
@@ -210,6 +184,29 @@
          <property name="icon">
           <iconset resource="bill_master_resources.qrc">
            <normaloff>:/icons/icons/1434047701_vector_65_04.png</normaloff>:/icons/icons/1434047701_vector_65_04.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QPushButton" name="deleteInvoice">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>80</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Delete</string>
+         </property>
+         <property name="icon">
+          <iconset resource="bill_master_resources.qrc">
+           <normaloff>:/icons/icons/1429107797_678069-sign-error-128.png</normaloff>:/icons/icons/1429107797_678069-sign-error-128.png</iconset>
          </property>
         </widget>
        </item>
@@ -275,6 +272,11 @@
        </column>
        <column>
         <property name="text">
+         <string>Booking Id</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
          <string>Date</string>
         </property>
        </column>
@@ -308,56 +310,6 @@
          <string>Status</string>
         </property>
        </column>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QGroupBox" name="groupBox_2">
-       <property name="maximumSize">
-        <size>
-         <width>600</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="title">
-        <string>Invoice Details</string>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
-        <item>
-         <widget class="QTabWidget" name="food_bill_details">
-          <property name="currentIndex">
-           <number>0</number>
-          </property>
-          <widget class="QWidget" name="tab_3">
-           <attribute name="title">
-            <string>Lodging Bill Details</string>
-           </attribute>
-           <layout class="QVBoxLayout" name="verticalLayout_4">
-            <item>
-             <widget class="QTextEdit" name="lBill">
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-          <widget class="QWidget" name="tab_4">
-           <attribute name="title">
-            <string>Foods Bill Details</string>
-           </attribute>
-           <layout class="QHBoxLayout" name="horizontalLayout_2">
-            <item>
-             <widget class="QTextEdit" name="fBill">
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </widget>
-        </item>
-       </layout>
       </widget>
      </item>
     </layout>

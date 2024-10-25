@@ -36,6 +36,10 @@ private slots:
 
     void on_removeOrder_clicked();
 
+    void on_finalizeFoods_clicked();
+
+    void on_editFoodDetails_clicked();
+
 private:
     Ui::Foods *ui;
 };

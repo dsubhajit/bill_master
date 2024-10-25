@@ -23,6 +23,7 @@ CreateBooking::CreateBooking(QWidget *parent) :
     m_customer_id = -1;
 
     mEditMode = false;
+    ui->bookingDate->setDate(QDate::currentDate());
     ui->from_date->setDate(QDate::currentDate());
     ui->to_date->setDate(QDate::currentDate());
     ui->advanceText->setVisible(false);
@@ -64,6 +65,7 @@ void CreateBooking::setEditMode(bool mode)
         {
             query1.next();
             query2.next();
+            ui->bookingDate->setDate(query1.value("booking_date").toDate());
             if(query1.value("booking_from").toDate() == query1.value("booking_to").toDate())
             {
                 ui->single_day->setChecked(true);
@@ -361,10 +363,17 @@ void CreateBooking::on_roomsList_currentIndexChanged(int index)
 
 void CreateBooking::on_from_date_dateChanged(const QDate &date)
 {
-    int val = date.daysTo(ui->to_date->date());    
-    val+=1;
-    if(val==0) ui->days_count->setText(QString::number(val));
-    ui->to_date->setDate(ui->from_date->date().addDays(1));
+    if(ui->single_day->isChecked())
+    {
+        ui->to_date->setDate(ui->from_date->date());
+    }
+    else
+    {
+        int val = date.daysTo(ui->to_date->date());
+        val+=1;
+        if(val==0) ui->days_count->setText(QString::number(val));
+        ui->to_date->setDate(ui->from_date->date().addDays(1));
+    }
 }
 
 void CreateBooking::on_to_date_dateChanged(const QDate &date)
@@ -413,6 +422,7 @@ void CreateBooking::onItemActivated(const QModelIndex &index)
                 ui->c_customer_phone->setText(query1.value("phone").toString());
                 ui->c_customer_id_type->setText(query1.value("id_type").toString());
                 ui->c_customer_id_serial->setText(query1.value("id_serial").toString());
+                ui->gst_no->setText(query1.value("gstin_no").toString());
             }
         }
     }
@@ -446,14 +456,17 @@ bool CreateBooking::checkBookingAvail(QString date_from, QString date_to, int ro
     }
     else
     {
-        QSqlQuery query1("SELECT * FROM `room_bookings` where room_id="+QString::number(room_id)+" and (( booking_from>='"+date_from+"' and booking_to <= '"+date_to+"') or (booking_from>='"+date_from+"' and booking_from <= '"+date_to+"') or (booking_to>='"+date_from+"' and booking_to <= '"+date_to+"'));",d->getConnection());
+        QSqlQuery query1("SELECT out_time FROM `room_bookings` inner join booking on room_bookings.booking_id = booking.booking_id where room_id="+QString::number(room_id)+" and (( room_bookings.booking_from>='"+date_from+"' and room_bookings.booking_to <= '"+date_to+"') or (room_bookings.booking_from>='"+date_from+"' and room_bookings.booking_from <= '"+date_to+"') or (room_bookings.booking_to>='"+date_from+"' and room_bookings.booking_to <= '"+date_to+"'));",d->getConnection());
         qDebug()<<query1.lastQuery();
 
         if(query1.isActive())
         {
             if(query1.size() > 0)
             {
-                return false;
+                query1.next();
+                qDebug()<<query1.value("out_time").toString()<< " " <<query1.value("out_time").toString().length()<<"  "<<(query1.value("out_time").toDateTime() < QDateTime::currentDateTime());
+                if(query1.value("out_time").toString().length()!=0 && query1.value("out_time").toDateTime()< QDateTime::currentDateTime()) return true;
+                else return false;
             }
             else return true;
         }
@@ -563,11 +576,12 @@ void CreateBooking::on_saveBookingBtn_clicked()
 
         if(mEditMode)
         {
-            sql0 = "UPDATE `booking` set customer_id="+QString::number(customer_id)+",booking_from='"+booking_date_from.toString("yyyy-MM-dd")+"',booking_to='"+booking_date_to.toString("yyyy-MM-dd")+"',booking_status="+QString::number(booking_status)+", customer_status='"+QString::number(customer_status)+"',nop='"+QString::number(num_of_persons)+"',persons_name='"+name_of_persons+"',commnets='"+comments+"' where booking_id="+QString::number(mBookingId)+";";
+            sql0 = "UPDATE `booking` set booking_date='"+ui->bookingDate->date().toString("yyyy-MM-dd")+"',customer_id="+QString::number(customer_id)+",in_time='"+ui->check_in_date_time->dateTime().toString("yyyy-MM-dd hh:mm:ss")+"',booking_from='"+booking_date_from.toString("yyyy-MM-dd")+"',booking_to='"+booking_date_to.toString("yyyy-MM-dd")+"',booking_status="+QString::number(booking_status)+", customer_status='"+QString::number(customer_status)+"',nop='"+QString::number(num_of_persons)+"',persons_name='"+name_of_persons+"',commnets='"+comments+"' where booking_id="+QString::number(mBookingId)+";";
         }
         else
         {
-            sql0 = "INSERT INTO `booking` VALUES (DEFAULT, '"+QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")+"', '"+QString::number(customer_id)+"', '"+booking_date_from.toString("yyyy-MM-dd")+"', '"+booking_date_to.toString("yyyy-MM-dd")+"','"+((check_in_time.length() > 0)?check_in_time:"NULL")+"','NULL','',"+QString::number(booking_status)+", '"+QString::number(customer_status)+"', '"+QString::number(payment_status)+"', '"+QString::number(num_of_persons)+"','"+name_of_persons+"','"+comments+"');";
+            sql0 = "INSERT INTO `booking` VALUES (DEFAULT, '"+ui->bookingDate->date().toString("yyyy-MM-dd")+"', '"+QString::number(customer_id)+"', '"+booking_date_from.toString("yyyy-MM-dd")+"', '"+booking_date_to.toString("yyyy-MM-dd")+"','"+((check_in_time.length() > 0)?check_in_time:"NULL")+"','NULL','',"+QString::number(booking_status)+", '"+QString::number(customer_status)+"', '"+QString::number(payment_status)+"', '"+QString::number(num_of_persons)+"','"+name_of_persons+"','"+comments+"');";
+            //sql0 = "INSERT INTO `booking` VALUES (DEFAULT, '"+QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")+"', '"+QString::number(customer_id)+"', '"+booking_date_from.toString("yyyy-MM-dd")+"', '"+booking_date_to.toString("yyyy-MM-dd")+"','"+((check_in_time.length() > 0)?check_in_time:"NULL")+"','NULL','',"+QString::number(booking_status)+", '"+QString::number(customer_status)+"', '"+QString::number(payment_status)+"', '"+QString::number(num_of_persons)+"','"+name_of_persons+"','"+comments+"');";
         }
 
         QSqlQuery query1(sql0,d->getConnection());
@@ -593,10 +607,11 @@ void CreateBooking::on_saveBookingBtn_clicked()
             QList<QListWidgetItem*> room_items =  ui->room_list->selectedItems();
             ui->room_status_table->setRowCount(room_items.size());
             int row = 0;
+
             foreach (QListWidgetItem* item, room_items)
             {
                 if(comaFlag)sql+=",";
-                sql += "(DEFAULT,"+ui->room_status_table->item(row,1)->text()+","+item->data(Qt::UserRole).toString()+",'"+booking_date_from.toString("yyyy-MM-dd")+"', '"+((ui->single_day->isChecked())?booking_date_from.toString("yyyy-MM-dd"):booking_date_to.toString("yyyy-MM-dd"))+"',"+QString::number(booking_id)+")";
+                sql += "(DEFAULT,"+ui->room_status_table->item(row,1)->text()+","+item->data(Qt::UserRole).toString()+","+ui->room_status_table->item(row,4)->text()+","+ui->room_status_table->item(row,5)->text()+",'"+booking_date_from.toString("yyyy-MM-dd")+"', '"+((ui->single_day->isChecked())?booking_date_from.toString("yyyy-MM-dd"):booking_date_to.toString("yyyy-MM-dd"))+"',"+QString::number(booking_id)+")";
                 sql2 += item->data(Qt::UserRole).toString();
                 comaFlag = true;
                 row++;
@@ -765,17 +780,21 @@ void CreateBooking::on_checkAvail_clicked()
     {
 
         double room_rate = 0;
+        double cgst = 0,sgst = 0,gst=0;
         if(!d->getConnection().open())
         {
             msgBox.critical(this,"Error","Failed to connect database.1");
         }
         else
         {
-            QSqlQuery query1("select rate_per_room from rooms where room_id="+item->data(Qt::UserRole).toString(),d->getConnection());
+            QSqlQuery query1("select rate_per_room,cgst,sgst,gst from rooms where room_id="+item->data(Qt::UserRole).toString(),d->getConnection());
             if(query1.isActive())
             {
                 query1.next();
                 room_rate = query1.value(0).toDouble();
+                cgst = query1.value(1).toDouble();
+                sgst = query1.value(2).toDouble();
+                gst = query1.value(3).toDouble();
             }
         }
 
@@ -872,11 +891,24 @@ void CreateBooking::on_checkAvail_clicked()
         tItem4->setText(status);
         tItem4->setFlags(item->flags() & ~Qt::ItemIsEditable);
 
+        QTableWidgetItem* tItem5  = new QTableWidgetItem();
+        tItem5->setText(QString::number(cgst,'f',2));
+        //tItem5->setFlags(item->flags() & ~Qt::ItemIsEditable);
+
+        QTableWidgetItem* tItem6  = new QTableWidgetItem();
+        tItem6->setText(QString::number(sgst,'f',2));
+        //tItem6->setFlags(item->flags() & ~Qt::ItemIsEditable);
+
+
+
         ui->room_status_table->setItem(i,0,tItem);
         ui->room_status_table->setItem(i,1,tItem1);
         ui->room_status_table->setItem(i,2,tItem2);
         ui->room_status_table->setItem(i,3,tItem3);
-        ui->room_status_table->setItem(i,4,tItem4);
+        ui->room_status_table->setItem(i,4,tItem5);
+        ui->room_status_table->setItem(i,5,tItem6);
+        //ui->room_status_table->setItem(i,6,tItem7);
+        ui->room_status_table->setItem(i,6,tItem4);
 
         i++;
     }
@@ -945,3 +977,19 @@ void CreateBooking::on_payment_status_currentIndexChanged(int index)
         ui->advanceMoney->setVisible(false);
     }
 }
+
+/*
+void CreateBooking::on_room_status_table_cellChanged(int row, int column)
+{
+    //if(ui->room_status_table->item(row,column)->)
+    //{
+        if(column == 6 || column == 7)
+        {
+            double cgst=0,sgst=0;
+            cgst = ui->room_status_table->item(row,6)->text().toDouble();
+            sgst = ui->room_status_table->item(row,7)->text().toDouble();
+            ui->room_status_table->item(row,8)->setText(QString::number(cgst+sgst,'f',2));
+        }
+    //}
+}
+*/

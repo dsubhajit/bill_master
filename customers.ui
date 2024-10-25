@@ -261,6 +261,11 @@
        <string>Comments</string>
       </property>
      </column>
+     <column>
+      <property name="text">
+       <string>GSTIN</string>
+      </property>
+     </column>
     </widget>
    </item>
   </layout>

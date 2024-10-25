@@ -96,7 +96,7 @@ void AddFoodOrder::addFoodsInForm()
             {
                 QStandardItem *item = new QStandardItem;
                 item->setText(query1.value(1).toString());
-                item->setData(query1.value(0).toInt(), Qt::UserRole);
+                item->setData(query1.value(0).toInt(), Qt::UserRole);                
                 model->appendRow(item);
                 //ui->customer_list->addItem(query1.value(1).toString(),QVariant::fromValue(query1.value(0).toInt()));
                 //ui->roomsList->addItem(query1.value(1).toString(),QVariant::fromValue(query1.value(0).toInt()));
@@ -149,29 +149,65 @@ void AddFoodOrder::on_cancelBtn_clicked()
 void AddFoodOrder::on_addFoodInOrderListBtn_clicked()
 {
         qDebug()<<"price:"<<ui->price->text().toInt()<<" qty:"<<ui->qty->text().toInt();
-    //if(ui->price->text().toInt() != 0 && ui->qty->text().toInt()!=0){
+
         int row = ui->foodOrderList->rowCount();
         ui->foodOrderList->setRowCount(row+1);
 
-        QTableWidgetItem *item1 = new QTableWidgetItem();
-        item1->setText(ui->foodItem->text());
-        item1->setData(Qt::UserRole,QVariant::fromValue(ui->foodItem->completer()->currentIndex().data(Qt::UserRole).toInt()));
-        ui->foodOrderList->setItem(row,0,item1);
+        DbMysql* d = DbMysql::getInstance();
+        QMessageBox msgBox;
+        if(!d->getConnection().open()){
+            msgBox.critical(this,"Error","Failed to connect database.");
+        }
+        else {
 
-        QTableWidgetItem *item2 = new QTableWidgetItem();
-        item2->setText(ui->qty->text());
-        item2->setData(Qt::UserRole,QVariant::fromValue(ui->qty->text().toInt()));
-        ui->foodOrderList->setItem(row,1,item2);
+            QSqlQuery query( "select * from foods where food_id="+QString::number(ui->foodItem->completer()->currentIndex().data(Qt::UserRole).toInt())+";" ,d->getConnection());
+            if( !query.isActive() )
+            {
+                qDebug()<<"Failed to execute query. Add Food Order.";
+                qDebug()<<query.lastQuery();
+                qDebug()<<query.lastError().text();
+                msgBox.critical(this,"Error",query.lastError().text());
+                return;
+            }
+            else
+            {
+                query.next();
 
-        QTableWidgetItem *item3 = new QTableWidgetItem();
-        item3->setText(ui->price->text());
-        ui->foodOrderList->setItem(row,2,item3);
 
-        QTableWidgetItem *item4 = new QTableWidgetItem();
-        item4->setText(QString::number(ui->qty->text().toDouble()*ui->price->text().toDouble(),'f',2));
-        item4->setData(Qt::UserRole,QVariant::fromValue(ui->qty->text().toDouble()*ui->price->text().toDouble()));
-        ui->foodOrderList->setItem(row,3,item4);
+                QTableWidgetItem *item = new QTableWidgetItem();
+                item->setText(query.value("hsn_code").toString());
+                item->setData(Qt::UserRole,QVariant::fromValue(ui->foodItem->completer()->currentIndex().data(Qt::UserRole).toInt()));
+                ui->foodOrderList->setItem(row,0,item);
 
+                QTableWidgetItem *item1 = new QTableWidgetItem();
+                item1->setText(query.value("food_name").toString());
+                item1->setData(Qt::UserRole,QVariant::fromValue(ui->foodItem->completer()->currentIndex().data(Qt::UserRole).toInt()));
+                ui->foodOrderList->setItem(row,1,item1);
+
+                QTableWidgetItem *item2 = new QTableWidgetItem();
+                item2->setText(ui->qty->text());
+                item2->setData(Qt::UserRole,QVariant::fromValue(ui->qty->text().toInt()));
+                ui->foodOrderList->setItem(row,2,item2);
+
+                QTableWidgetItem *item3 = new QTableWidgetItem();
+                item3->setText(query.value("food_price").toString());
+                ui->foodOrderList->setItem(row,3,item3);
+
+                QTableWidgetItem *item4 = new QTableWidgetItem();
+                item4->setText(query.value("sgst").toString());
+                ui->foodOrderList->setItem(row,4,item4);
+
+                QTableWidgetItem *item5 = new QTableWidgetItem();
+                item5->setText(query.value("cgst").toString());
+                ui->foodOrderList->setItem(row,5,item5);
+
+                QTableWidgetItem *item6 = new QTableWidgetItem();
+                item6->setText(QString::number(ui->qty->text().toDouble()*query.value("food_price").toDouble(),'f',2));
+                item6->setData(Qt::UserRole,QVariant::fromValue(ui->qty->text().toDouble()*ui->price->text().toDouble()));
+                ui->foodOrderList->setItem(row,6,item6);
+            }
+        }
+        ui->foodOrderList->resizeColumnsToContents();
 
         ui->foodItem->clear();
         ui->price->clear();
@@ -198,10 +234,14 @@ void AddFoodOrder::on_saveBtn_clicked()
         for(int i=0;i<ui->foodOrderList->rowCount();i++)
         {
             if(!comaFlag)sql+=",";
-            int foodId = ui->foodOrderList->item(i,0)->data(Qt::UserRole).toInt();
-            QString qty = ui->foodOrderList->item(i,1)->data(Qt::UserRole).toString();
-            double rate = ui->foodOrderList->item(i,2)->text().toDouble();
-            sql += "(DEFAULT,'"+ui->foodOrderList->item(i,0)->text()+"',now(),"+qty+","+QString::number(rate,'f',2)+","+QString::number(this->booking_id)+")";
+
+            QString qty = ui->foodOrderList->item(i,2)->data(Qt::UserRole).toString();
+            double rate = ui->foodOrderList->item(i,3)->text().toDouble();
+            double cgst = ui->foodOrderList->item(i,4)->text().toDouble();
+            double sgst = ui->foodOrderList->item(i,5)->text().toDouble();
+            QString hsn_code =  ui->foodOrderList->item(i,0)->text();
+
+            sql += "(DEFAULT,'"+ui->foodOrderList->item(i,1)->text()+"',now(),"+qty+","+QString::number(rate,'f',2)+",'"+hsn_code+"',"+QString::number(sgst)+","+QString::number(cgst)+","+QString::number(this->booking_id)+")";
             comaFlag=false;
 
         }
